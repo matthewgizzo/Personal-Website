@@ -8,7 +8,7 @@ namespace PersonalWebsite.Models
     public class Book
     {
         [Key]
-        [Column("Id", TypeName = "bit")]
+        [Column("PK_Id", TypeName = "bit")]
         public int ID { get; set; }
         
         [Column("Title", TypeName = "varchar(100)")]
@@ -33,5 +33,16 @@ namespace PersonalWebsite.Models
     public class BookDBContext : DbContext
     {
         public DbSet<Book> Books { get; set; }
+
+        /// <summary>
+        /// Override the base implementation of OnModelCreating to ensure we have the primary key in the DB table on creation.
+        /// </summary>
+        /// <param name="modelBuilder"></param>
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Book>()
+                .HasKey(Book => Book.ID)
+                .HasName("PK_Id");
+        }
     }
 }
