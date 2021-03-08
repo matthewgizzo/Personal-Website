@@ -64,6 +64,9 @@ namespace PersonalWebsite
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapControllerRoute(
+                    name: "Hello",
+                    pattern: "{controller}/{action}/{name}/{id}");
                 endpoints.MapRazorPages();
             });
         }
