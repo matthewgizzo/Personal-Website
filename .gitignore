@@ -8,6 +8,9 @@
 #json files
 .json
 
+#configuration files
+.config
+
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
 
