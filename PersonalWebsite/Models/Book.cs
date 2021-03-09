@@ -1,14 +1,17 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Configuration;
+using System.IO;
 
 namespace PersonalWebsite.Models
 {
     public class Book
     {
         [Key]
-        [Column("PK_Id", TypeName = "bit")]
+        [Column("PK_Id", TypeName = "smallint")]
         public int ID { get; set; }
         
         [Column("Title", TypeName = "varchar(100)")]
@@ -43,6 +46,20 @@ namespace PersonalWebsite.Models
             modelBuilder.Entity<Book>()
                 .HasKey(Book => Book.ID)
                 .HasName("PK_Id");
+
+            modelBuilder.Entity<Book>()
+                .Property(book => book.ID).IsRequired();
+
+            base.OnModelCreating(modelBuilder);
+        }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            IConfigurationRoot configuration = new ConfigurationBuilder()
+                .SetBasePath(Path.Combine(Directory.GetCurrentDirectory()))
+                .AddJsonFile("appsettings.json", optional: false)
+                .Build();
+            optionsBuilder.UseSqlServer(configuration.GetConnectionString("BookDBContext"));
         }
     }
 }
