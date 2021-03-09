@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PersonalWebsite.Models;
 
 namespace PersonalWebsite.Migrations
 {
     [DbContext(typeof(BookDBContext))]
-    partial class BookDBContextModelSnapshot : ModelSnapshot
+    [Migration("20210309040753_NullableBookFieldsUpdate")]
+    partial class NullableBookFieldsUpdate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -28,7 +30,6 @@ namespace PersonalWebsite.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.None);
 
                     b.Property<string>("Author")
-                        .IsRequired()
                         .HasColumnType("varchar(50)")
                         .HasColumnName("Author");
 
@@ -45,7 +46,6 @@ namespace PersonalWebsite.Migrations
                         .HasColumnName("Series");
 
                     b.Property<string>("Title")
-                        .IsRequired()
                         .HasColumnType("varchar(100)")
                         .HasColumnName("Title");
 

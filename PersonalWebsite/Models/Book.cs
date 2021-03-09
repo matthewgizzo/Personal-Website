@@ -50,6 +50,12 @@ namespace PersonalWebsite.Models
             modelBuilder.Entity<Book>()
                 .Property(book => book.ID).IsRequired();
 
+            modelBuilder.Entity<Book>()
+                .Property(book => book.Author).IsRequired();
+
+            modelBuilder.Entity<Book>()
+                .Property(book => book.Title).IsRequired();
+
             base.OnModelCreating(modelBuilder);
         }
 
