@@ -24,13 +24,13 @@ namespace PersonalWebsite.Models
         public DateTime ReleaseDate { get; set; }
 
         [Column("Genre", TypeName = "varchar(50)")]
-        public string Genre { get; set; }
+        public string? Genre { get; set; }
 
         [Column("Series", TypeName = "varchar(100)")]
-        public string Series { get; set; }
+        public string? Series { get; set; }
 
         [Column("WikipediaLink", TypeName = "varchar(500)")]
-        public string WikipediaLink { get; set; }
+        public string? WikipediaLink { get; set; }
     }
 
     public class BookDBContext : DbContext
