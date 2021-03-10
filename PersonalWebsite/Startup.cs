@@ -8,11 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using PersonalWebsite.Data;
-using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
-using System.Threading.Tasks;
+using PersonalWebsite.Models;
 
 namespace PersonalWebsite
 {
@@ -29,6 +25,10 @@ namespace PersonalWebsite
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlServer(
+                    Configuration.GetConnectionString("BookDBContext")));
+
+            services.AddDbContext<BookDBContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("BookDBContext")));
             services.AddDatabaseDeveloperPageExceptionFilter();

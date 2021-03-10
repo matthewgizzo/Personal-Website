@@ -21,11 +21,11 @@ namespace PersonalWebsite.Migrations
 
             modelBuilder.Entity("PersonalWebsite.Models.Book", b =>
                 {
-                    b.Property<short>("ID")
+                    b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("smallint")
+                        .HasColumnType("int")
                         .HasColumnName("PK_Id")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.None);
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Author")
                         .IsRequired()
@@ -37,7 +37,7 @@ namespace PersonalWebsite.Migrations
                         .HasColumnName("Genre");
 
                     b.Property<DateTime>("ReleaseDate")
-                        .HasColumnType("datetime")
+                        .HasColumnType("date")
                         .HasColumnName("ReleaseDate");
 
                     b.Property<string>("Series")

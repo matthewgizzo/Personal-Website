@@ -10,8 +10,8 @@ using PersonalWebsite.Models;
 namespace PersonalWebsite.Migrations
 {
     [DbContext(typeof(BookDBContext))]
-    [Migration("20210308220239_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20210309225259_BookTableCreate")]
+    partial class BookTableCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -23,13 +23,14 @@ namespace PersonalWebsite.Migrations
 
             modelBuilder.Entity("PersonalWebsite.Models.Book", b =>
                 {
-                    b.Property<short>("ID")
+                    b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("smallint")
+                        .HasColumnType("int")
                         .HasColumnName("PK_Id")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.None);
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Author")
+                        .IsRequired()
                         .HasColumnType("varchar(50)")
                         .HasColumnName("Author");
 
@@ -38,7 +39,7 @@ namespace PersonalWebsite.Migrations
                         .HasColumnName("Genre");
 
                     b.Property<DateTime>("ReleaseDate")
-                        .HasColumnType("datetime")
+                        .HasColumnType("date")
                         .HasColumnName("ReleaseDate");
 
                     b.Property<string>("Series")
@@ -46,6 +47,7 @@ namespace PersonalWebsite.Migrations
                         .HasColumnName("Series");
 
                     b.Property<string>("Title")
+                        .IsRequired()
                         .HasColumnType("varchar(100)")
                         .HasColumnName("Title");
 

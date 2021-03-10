@@ -24,7 +24,7 @@ namespace PersonalWebsite.Controllers
             return View(await _context.Books.ToListAsync());
         }
 
-        // GET: Books/Details/5
+        [Route("Books/Details/{id:int}")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -34,6 +34,24 @@ namespace PersonalWebsite.Controllers
 
             var book = await _context.Books
                 .FirstOrDefaultAsync(m => m.ID == id);
+            if (book == null)
+            {
+                return NotFound();
+            }
+
+            return View(book);
+        }
+
+        [Route("Books/Details/{title:alpha}")]
+        public async Task<IActionResult> Details(string? title)
+        {
+            if (title == null)
+            {
+                return NotFound();
+            }
+
+            var book = await _context.Books
+                .FirstOrDefaultAsync(m => m.Title.Replace(" ", String.Empty).ToLower() == title.ToLower());
             if (book == null)
             {
                 return NotFound();

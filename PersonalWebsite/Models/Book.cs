@@ -11,7 +11,7 @@ namespace PersonalWebsite.Models
     public class Book
     {
         [Key]
-        [Column("PK_Id", TypeName = "smallint")]
+        [Column("PK_Id", TypeName = "int")]
         public int ID { get; set; }
         
         [Column("Title", TypeName = "varchar(100)")]
@@ -20,7 +20,7 @@ namespace PersonalWebsite.Models
         [Column("Author", TypeName = "varchar(50)")]
         public string Author { get; set; }
 
-        [Column("ReleaseDate", TypeName = "datetime")]
+        [Column("ReleaseDate", TypeName = "date")]
         public DateTime ReleaseDate { get; set; }
 
         [Column("Genre", TypeName = "varchar(50)")]
@@ -36,6 +36,10 @@ namespace PersonalWebsite.Models
     public class BookDBContext : DbContext
     {
         public DbSet<Book> Books { get; set; }
+
+        public BookDBContext(DbContextOptions<BookDBContext> options) : base(options)
+        {
+        }
 
         /// <summary>
         /// Override the base implementation of OnModelCreating to ensure we have the primary key in the DB table on creation.
