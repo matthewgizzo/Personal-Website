@@ -8,10 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using PersonalWebsite.Data;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using PersonalWebsite.Models;
 
 namespace PersonalWebsite
 {
@@ -29,7 +26,11 @@ namespace PersonalWebsite
         {
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection")));
+                    Configuration.GetConnectionString("BookDBContext")));
+
+            services.AddDbContext<BookDBContext>(options =>
+                options.UseSqlServer(
+                    Configuration.GetConnectionString("BookDBContext")));
             services.AddDatabaseDeveloperPageExceptionFilter();
 
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
@@ -69,6 +70,12 @@ namespace PersonalWebsite
                     pattern: "{controller}/{action}/{name}/{id}");
                 endpoints.MapRazorPages();
             });
+
+            using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
+            {
+                var context = serviceScope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+                context.Database.Migrate();
+            }
         }
     }
 }

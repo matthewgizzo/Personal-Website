@@ -1,14 +1,17 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Configuration;
+using System.IO;
 
 namespace PersonalWebsite.Models
 {
     public class Book
     {
         [Key]
-        [Column("PK_Id", TypeName = "bit")]
+        [Column("PK_Id", TypeName = "int")]
         public int ID { get; set; }
         
         [Column("Title", TypeName = "varchar(100)")]
@@ -17,22 +20,26 @@ namespace PersonalWebsite.Models
         [Column("Author", TypeName = "varchar(50)")]
         public string Author { get; set; }
 
-        [Column("ReleaseDate", TypeName = "datetime")]
+        [Column("ReleaseDate", TypeName = "date")]
         public DateTime ReleaseDate { get; set; }
 
         [Column("Genre", TypeName = "varchar(50)")]
-        public string Genre { get; set; }
+        public string? Genre { get; set; }
 
         [Column("Series", TypeName = "varchar(100)")]
-        public string Series { get; set; }
+        public string? Series { get; set; }
 
         [Column("WikipediaLink", TypeName = "varchar(500)")]
-        public string WikipediaLink { get; set; }
+        public string? WikipediaLink { get; set; }
     }
 
     public class BookDBContext : DbContext
     {
         public DbSet<Book> Books { get; set; }
+
+        public BookDBContext(DbContextOptions<BookDBContext> options) : base(options)
+        {
+        }
 
         /// <summary>
         /// Override the base implementation of OnModelCreating to ensure we have the primary key in the DB table on creation.
@@ -43,6 +50,26 @@ namespace PersonalWebsite.Models
             modelBuilder.Entity<Book>()
                 .HasKey(Book => Book.ID)
                 .HasName("PK_Id");
+
+            modelBuilder.Entity<Book>()
+                .Property(book => book.ID).IsRequired();
+
+            modelBuilder.Entity<Book>()
+                .Property(book => book.Author).IsRequired();
+
+            modelBuilder.Entity<Book>()
+                .Property(book => book.Title).IsRequired();
+
+            base.OnModelCreating(modelBuilder);
+        }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            IConfigurationRoot configuration = new ConfigurationBuilder()
+                .SetBasePath(Path.Combine(Directory.GetCurrentDirectory()))
+                .AddJsonFile("appsettings.json", optional: false)
+                .Build();
+            optionsBuilder.UseSqlServer(configuration.GetConnectionString("BookDBContext"));
         }
     }
 }
